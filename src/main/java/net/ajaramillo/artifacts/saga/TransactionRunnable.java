@@ -1,4 +1,4 @@
-package ajaramillo.net.saga;
+package net.ajaramillo.artifacts.saga;
 
 interface TransactionRunnable<E extends Exception> extends Runnable {
 

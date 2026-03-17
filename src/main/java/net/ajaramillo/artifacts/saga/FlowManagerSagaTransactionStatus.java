@@ -1,4 +1,4 @@
-package ajaramillo.net.saga;
+package net.ajaramillo.artifacts.saga;
 
 public enum FlowManagerSagaTransactionStatus {
     READY, //Manager listo para lanzar las transacciones

@@ -1,4 +1,4 @@
-package ajaramillo.net.saga;
+package net.ajaramillo.artifacts.saga;
 
 public enum TransactionStatus {
     // Created Transaction

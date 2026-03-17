@@ -1,4 +1,4 @@
-package ajaramillo.net.saga;
+package net.ajaramillo.artifacts.saga;
 
 class FlowManagerSagaTransaction {
     private SagaTransaction initialSagaTransaction;

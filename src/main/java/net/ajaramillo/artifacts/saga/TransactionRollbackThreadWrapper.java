@@ -1,4 +1,4 @@
-package ajaramillo.net.saga;
+package net.ajaramillo.artifacts.saga;
 
 //@FunctionalInterface
 class TransactionRollbackThreadWrapper<E extends Transaction> implements TransactionRunnable<Exception> {

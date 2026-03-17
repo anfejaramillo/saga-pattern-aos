@@ -1,4 +1,4 @@
-package ajaramillo.net.saga;
+package net.ajaramillo.artifacts.saga;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Inherited;
