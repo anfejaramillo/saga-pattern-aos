@@ -1,0 +1,120 @@
+############################
+# Compiled Java files
+############################
+*.class
+*.jar
+*.war
+*.ear
+*.nar
+*.zip
+*.tar.gz
+*.rar
+
+############################
+# Logs
+############################
+*.log
+logs/
+hs_err_pid*
+replay_pid*
+
+############################
+# Build directories
+############################
+target/
+build/
+out/
+dist/
+
+############################
+# Maven
+############################
+.mvn/wrapper/maven-wrapper.jar
+.mvn/timing.properties
+.mvn/wrapper/maven-wrapper.properties
+
+############################
+# Gradle
+############################
+.gradle/
+build/
+!gradle/wrapper/gradle-wrapper.jar
+
+############################
+# IntelliJ IDEA
+############################
+.idea/
+*.iws
+*.iml
+*.ipr
+out/
+
+############################
+# Eclipse
+############################
+.project
+.classpath
+.settings/
+.factorypath
+*.launch
+bin/
+
+############################
+# NetBeans
+############################
+nbproject/private/
+nbbuild/
+dist/
+nbdist/
+.nb-gradle/
+
+############################
+# VS Code
+############################
+.vscode/
+
+############################
+# OS generated files
+############################
+.DS_Store
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+############################
+# Temporary files
+############################
+*.swp
+*.swo
+*~
+.tmp/
+temp/
+
+############################
+# Coverage / Testing
+############################
+coverage/
+jacoco.exec
+*.lcov
+
+############################
+# Dependency directories
+############################
+node_modules/
+
+############################
+# Environment files
+############################
+.env
+.env.*
+
+############################
+# Mac
+############################
+.AppleDouble
+.LSOverride
+
+############################
+# Linux
+############################
+*~

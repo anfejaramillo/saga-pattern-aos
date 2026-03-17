@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>ajaramillo.net</groupId>
+    <artifactId>saga-pattern-aos</artifactId>
+    <version>0.9.0</version>
+    <name>saga-atomic-orchestrated-synchronous</name>
+    <description>Saga pattern implementation for Java based systems. The explicit implementation is an Atomic, Orchestrated and Synchronous.</description>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
+    </properties>
+
+    <developers>
+        <developer>
+            <name>Anfejaramillo</name>
+            <email>anfejaramillo@utp.edu.co</email>
+            <organization>Shadow Labs</organization>
+            <organizationUrl>https://www.ajaramillo.net/</organizationUrl>
+        </developer>
+    </developers>
+
+    <licenses>
+        <license>
+            <name>The Apache License, Version 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+        </license>
+    </licenses>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-api</artifactId>
+            <version>5.11.1</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+</project>
