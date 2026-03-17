@@ -5,7 +5,7 @@
 
     <groupId>net.ajaramillo.artifacts</groupId>
     <artifactId>saga-pattern-aos</artifactId>
-    <version>0.9.2</version>
+    <version>0.9.3</version>
     <packaging>jar</packaging>
 
 
