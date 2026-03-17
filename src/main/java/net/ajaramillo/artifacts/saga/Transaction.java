@@ -2,6 +2,11 @@ package net.ajaramillo.artifacts.saga;
 
 import java.util.UUID;
 
+/**
+ * Base class for a saga transaction. Implementations should override
+ * {@link #task()}, {@link #rollback()}, {@link #catchErrors()}, and
+ * {@link #getDescription()} to define behavior.
+ */
 @TransactionPolitics
 public abstract class Transaction {
     // id_transaction
@@ -16,7 +21,10 @@ public abstract class Transaction {
     // los objetos de transaction que pertenezcan a un mismo orquestador
     private SagaContext transactionContext;
 
-    // Getter publico no sobreescribible
+    /**
+     * Returns the shared saga context.
+     * @return saga context
+     */
     public final SagaContext getTransactionContext() {
         return transactionContext;
     }
@@ -25,61 +33,90 @@ public abstract class Transaction {
         this.transactionContext = sagaContext;
     }
 
-    // Get for transaction ID
+    /**
+     * Returns the unique transaction id.
+     * @return transaction id
+     */
     public UUID getTransactionId() {
         return this.transactionId;
     }
 
-    // Continue with run transaction even when the before process failed (default:
-    // false, this means that the transaction do not runs when preprocess have any
-    // error)
+    /**
+     * Whether this transaction should run even if the pre-process fails.
+     * @return true to run even with pre-process errors
+     */
     protected Boolean runTransactionWithErrorsInPreProcessForRunTransaction() {
         return false;
     }
 
-    // Processing before run this transaction, this can be overide in derivated
-    // classes
+    /**
+     * Pre-processing hook executed before the transaction task runs.
+     * @throws Exception if pre-process fails
+     */
     protected void preProcessForRunTransaction() throws Exception {
         this.setPreProcessForRunTransactionStatus(PreProcessForRunTransactionStatus.SUCCESFUL);
     }
 
-    // Transaction to execute
+    /**
+     * Executes the transaction logic.
+     * @throws Exception if the task fails
+     */
     public void task() throws Exception {
         throw new Exception("Task method not implemented");
     }
 
-    // Function that execute after rollback function
+    /**
+     * Called after rollback to handle or compensate errors.
+     * @throws Exception if error handling fails
+     */
     public void catchErrors() throws Exception {
         throw new Exception("Catch errors not implemented");
     }
 
-    // Function of roll back, it is executed when any exception raises in
-    // transaction process
+    /**
+     * Rollback logic for the transaction.
+     * @throws Exception if rollback fails
+     */
     public void rollback() throws Exception {
         throw new Exception("Rollback not implemented");
     }
 
-    // Short description of transaction type
+    /**
+     * Returns a short description of the transaction.
+     * @return description string
+     */
     public String getDescription() {
         return "Transaction description Not implemented";
     }
 
-    // Get for status of transaction
+    /**
+     * Returns the current transaction status.
+     * @return status
+     */
     public final TransactionStatus getTransactionStatus() {
         return this.status;
     }
 
-    // Set for transaction status
+    /**
+     * Sets the current transaction status.
+     * @param ts new status
+     */
     void setTransactionStatus(TransactionStatus ts) {
         this.status = ts;
     }
 
-    // get for preprocess status
+    /**
+     * Returns the pre-process status.
+     * @return pre-process status
+     */
     public final PreProcessForRunTransactionStatus getPreProcessForRunTransactionStatus() {
         return this.preProcessStatus;
     }
 
-    // set for pre process status
+    /**
+     * Sets the pre-process status.
+     * @param pre new pre-process status
+     */
     protected void setPreProcessForRunTransactionStatus(PreProcessForRunTransactionStatus pre) {
         this.preProcessStatus = pre;
     }
@@ -92,6 +129,10 @@ public abstract class Transaction {
                 + ", transactionContext=" + transactionContext + "]";
     }
 
+    /**
+     * Returns the {@link TransactionPolitics} annotation applied to this class.
+     * @return transaction politics annotation
+     */
     public final TransactionPolitics getTransactionPolitics() {
         TransactionPolitics implementationAnnotation = this.getClass().getAnnotation(TransactionPolitics.class);
         if (implementationAnnotation != null) {

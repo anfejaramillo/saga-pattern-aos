@@ -2,6 +2,11 @@ package net.ajaramillo.artifacts.saga;
 
 import java.util.UUID;
 
+/**
+ * Orchestrates a saga by registering transactions and executing them in order.
+ * This class is the main entry point for running a saga and tracking its
+ * overall context and state.
+ */
 public final class SagaOrchestator {
     // Identificador UNICO del conjunto de transacciones
     private UUID sagaTransactionId;
@@ -16,7 +21,10 @@ public final class SagaOrchestator {
     // time to review any transaction in saga, through log or console the state of the transactions in milliseconds 
     private Long timeToReviewTransactions = 500L;
 
-    //Constructor
+    /**
+     * Creates a new orchestrator with the provided saga context.
+     * @param sagaContext shared context for all transactions in the saga
+     */
     public SagaOrchestator(SagaContext sagaContext) {
         this.initialSagaTransaction = new SagaTransaction();
         this.sagaTransactionId = UUID.randomUUID();
@@ -33,25 +41,45 @@ public final class SagaOrchestator {
         }
     }
 
-    //Constructor
+    /**
+     * Creates a new orchestrator with a custom log review period.
+     * @param sagaContext shared context for all transactions in the saga
+     * @param timeToReviewTransactions interval (ms) between transaction status checks
+     */
     public SagaOrchestator(SagaContext sagaContext, Long timeToReviewTransactions){
         this(sagaContext);
         this.timeToReviewTransactions = timeToReviewTransactions;
     }
 
+    /**
+     * Returns the shared saga context.
+     * @return saga context
+     */
     public SagaContext getSagaContext() {
         return this.sagaContext;
 
     }
 
+    /**
+     * Returns the number of registered transactions.
+     * @return transaction count
+     */
     public Integer getNumTransactions() {
         return numTransactions;
     }
 
+    /**
+     * Returns the unique saga identifier.
+     * @return saga transaction id
+     */
     public UUID getSagaTransactionId() {
         return sagaTransactionId;
     }
 
+    /**
+     * Executes the saga starting from the first transaction.
+     * @throws Exception if the saga cannot be run or initialization failed
+     */
     public void runSaga() throws Exception {
         if (canRunSagaInstance) {
             System.out.println("Running saga with id: " + this.sagaTransactionId);
@@ -62,6 +90,11 @@ public final class SagaOrchestator {
         }
     }
 
+    /**
+     * Adds a transaction to the saga and registers it in the context.
+     * @param trans transaction to add
+     * @throws NullPointerException if the transaction is null
+     */
     public void addSagaTransaction(Transaction trans) throws NullPointerException {
         if (trans == null) {
             throw new NullPointerException("Transaction instance can not be null.");
@@ -72,6 +105,10 @@ public final class SagaOrchestator {
         this.numTransactions = this.numTransactions + 1;
     }
 
+    /**
+     * Removes the last transaction from the saga.
+     * @throws Exception if there are no transactions to remove
+     */
     public void removeLastSagaTransaction() throws Exception {
         if (this.initialSagaTransaction.transaction == null
                 && this.initialSagaTransaction.innerSagaTransaction == null) {
@@ -93,10 +130,18 @@ public final class SagaOrchestator {
         }
     }
 
+    /**
+     * Returns the interval (ms) between transaction status checks.
+     * @return period in milliseconds
+     */
     public Long getPeriodOfLogs() {
         return this.timeToReviewTransactions;
     }
 
+    /**
+     * Sets the interval (ms) between transaction status checks.
+     * @param timeToReviewTransactions interval in milliseconds
+     */
     public void setPeriodOfLogs(Long timeToReviewTransactions) {
         this.timeToReviewTransactions = timeToReviewTransactions;
     }

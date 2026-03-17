@@ -6,11 +6,17 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+/**
+ * Annotation that defines runtime policies for a transaction.
+ */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
 @Inherited
 public @interface TransactionPolitics {
-    //Timeout for whole transaction processing (or rollback processing). When the time has reach timeout then the thread is stopped.
-    //This is in Milliseconds
+    /**
+     * Timeout (ms) for transaction processing or rollback. When the timeout is
+     * reached, the executing thread is interrupted.
+     * @return timeout in milliseconds
+     */
     public long transactionTimeOut() default 120000L;
 }

@@ -1,5 +1,8 @@
 package net.ajaramillo.artifacts.saga;
 
+/**
+ * Status values for a transaction lifecycle.
+ */
 public enum TransactionStatus {
     // Created Transaction
     CREATED, 

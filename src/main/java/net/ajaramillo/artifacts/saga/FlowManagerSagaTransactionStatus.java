@@ -1,5 +1,8 @@
 package net.ajaramillo.artifacts.saga;
 
+/**
+ * Status values for the saga flow manager.
+ */
 public enum FlowManagerSagaTransactionStatus {
     READY, //Manager listo para lanzar las transacciones
     RUNNING,  //Manager administrando las transacciones SINCRONAMENT

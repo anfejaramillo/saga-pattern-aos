@@ -1,5 +1,9 @@
 package net.ajaramillo.artifacts.saga;
 
+/**
+ * Runnable wrapper that captures checked exceptions and updates thread status.
+ * @param <E> exception type that can be thrown by {@link #runTask()}
+ */
 interface TransactionRunnable<E extends Exception> extends Runnable {
 
     @Override
@@ -13,10 +17,22 @@ interface TransactionRunnable<E extends Exception> extends Runnable {
         }
     }
 
+    /**
+     * Executes the task logic.
+     * @throws E when the task fails
+     */
     void runTask() throws E;
 
+    /**
+     * Updates the internal transaction thread status.
+     * @param tts new status
+     */
     void setTransactionThreadStatus(TransactionThreadStatus tts);
 
+    /**
+     * Stores the exception raised by the task.
+     * @param ex exception to store
+     */
     void setTransactionThreadException(Exception ex);
 
 }

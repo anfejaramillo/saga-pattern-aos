@@ -1,11 +1,19 @@
 package net.ajaramillo.artifacts.saga;
 
+/**
+ * Executes a transaction rollback in a thread and captures its status/exception.
+ * @param <E> transaction type
+ */
 //@FunctionalInterface
 class TransactionRollbackThreadWrapper<E extends Transaction> implements TransactionRunnable<Exception> {
     Transaction tr;
     private TransactionThreadStatus tts = TransactionThreadStatus.THREAD_CREATED;
     private Exception ttException;
 
+    /**
+     * Creates a wrapper for the given transaction.
+     * @param tr transaction to rollback
+     */
     TransactionRollbackThreadWrapper(Transaction tr) {
         this.tr = tr;
     }
@@ -25,16 +33,26 @@ class TransactionRollbackThreadWrapper<E extends Transaction> implements Transac
         this.tts = tts;
     }
 
+    /**
+     * Returns the current thread status.
+     * @return status
+     */
     public TransactionThreadStatus getTransactionThreadStatus(){
         return this.tts;
     }
 
-    //Save the exception raised by transaction task
+    /**
+     * Stores the exception raised by the rollback.
+     * @param ex exception to store
+     */
     public void setTransactionThreadException(Exception ex){
         this.ttException = ex;
     }
 
-    //Get the exception raised by transaction task
+    /**
+     * Returns the exception raised by the rollback.
+     * @return exception or null
+     */
     public Exception getTransactionThreadException(){
         return this.ttException;
     }

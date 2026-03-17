@@ -1,5 +1,9 @@
 package net.ajaramillo.artifacts.saga;
 
+/**
+ * Executes the saga flow, coordinating pre-process, execution, and rollback
+ * logic for each transaction in order.
+ */
 class FlowManagerSagaTransaction {
     private SagaTransaction initialSagaTransaction;
     private FlowManagerSagaTransactionStatus flowManagerSagaTransactionStatus = FlowManagerSagaTransactionStatus.READY;
@@ -7,14 +11,27 @@ class FlowManagerSagaTransaction {
     private Boolean exceptionInRollback = false;
     private Long transactionElapsedTime = 0L;
 
+    /**
+     * Returns the current flow status.
+     * @return flow status
+     */
     public FlowManagerSagaTransactionStatus getFlowManagerSagaTransactionStatus() {
         return flowManagerSagaTransactionStatus;
     }
 
+    /**
+     * Creates a flow manager for the provided saga.
+     * @param saga root saga transaction
+     */
     public FlowManagerSagaTransaction(SagaTransaction saga) {
         this.initialSagaTransaction = saga;
     }
 
+    /**
+     * Creates a flow manager with a custom review interval.
+     * @param saga root saga transaction
+     * @param timeToReviewTransactions interval (ms) between transaction status checks
+     */
     public FlowManagerSagaTransaction(SagaTransaction saga, Long timeToReviewTransactions) {
         this(saga);
         this.timeToReviewTransactions = timeToReviewTransactions;
@@ -38,6 +55,10 @@ class FlowManagerSagaTransaction {
         }
     }
 
+    /**
+     * Runs the saga transaction chain and computes the final status.
+     * @throws Exception if an unexpected error occurs
+     */
     public void runSagaTransactions() throws Exception {
         setFlowManagerSagaTransactionStatus(FlowManagerSagaTransactionStatus.RUNNING);
         try {
