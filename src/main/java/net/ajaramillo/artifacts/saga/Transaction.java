@@ -136,11 +136,9 @@ public abstract class Transaction {
     public final TransactionPolitics getTransactionPolitics() {
         TransactionPolitics implementationAnnotation = this.getClass().getAnnotation(TransactionPolitics.class);
         if (implementationAnnotation != null) {
-            System.out.println(implementationAnnotation);
             return implementationAnnotation;
         } else {
             TransactionPolitics impl = super.getClass().getAnnotation(TransactionPolitics.class);
-            System.out.println(impl);
             return impl;
         }
     }

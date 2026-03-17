@@ -1,9 +1,12 @@
 package net.ajaramillo.artifacts.saga;
 
+import lombok.extern.slf4j.Slf4j;
+
 /**
  * Internal linked structure that stores the ordered transactions of a saga.
  * Each node contains a transaction and a reference to the next node.
  */
+@Slf4j
 class SagaTransaction {
     SagaTransaction fatherSagaTransaction;
     SagaTransaction innerSagaTransaction;
@@ -53,7 +56,7 @@ class SagaTransaction {
             this.transaction = transactionToAdd;
             // cambiamos el estatus a fetch
             this.transaction.setTransactionStatus(TransactionStatus.FETCHED);
-            System.out.println("Trans added: " + this.transaction.getDescription());
+            log.info("Transaction added: " + this.transaction.getDescription());
         }
     }
 
@@ -65,7 +68,7 @@ class SagaTransaction {
         if (this.innerSagaTransaction != null
                 && this.innerSagaTransaction.innerSagaTransaction == null
                 && this.innerSagaTransaction.transaction != null) {
-            System.out.println("Trans deleted: " + this.innerSagaTransaction.transaction.getDescription());
+            log.info("Transaction deleted: " + this.innerSagaTransaction.transaction.getDescription());
             this.innerSagaTransaction.transaction.setTransactionContext(null);
             this.innerSagaTransaction = null;
         } else {

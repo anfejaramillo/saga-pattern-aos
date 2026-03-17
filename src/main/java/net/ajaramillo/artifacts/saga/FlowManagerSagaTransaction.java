@@ -1,9 +1,12 @@
 package net.ajaramillo.artifacts.saga;
 
+import lombok.extern.slf4j.Slf4j;
+
 /**
  * Executes the saga flow, coordinating pre-process, execution, and rollback
  * logic for each transaction in order.
  */
+@Slf4j
 class FlowManagerSagaTransaction {
     private SagaTransaction initialSagaTransaction;
     private FlowManagerSagaTransactionStatus flowManagerSagaTransactionStatus = FlowManagerSagaTransactionStatus.READY;
@@ -13,6 +16,7 @@ class FlowManagerSagaTransaction {
 
     /**
      * Returns the current flow status.
+     * 
      * @return flow status
      */
     public FlowManagerSagaTransactionStatus getFlowManagerSagaTransactionStatus() {
@@ -21,6 +25,7 @@ class FlowManagerSagaTransaction {
 
     /**
      * Creates a flow manager for the provided saga.
+     * 
      * @param saga root saga transaction
      */
     public FlowManagerSagaTransaction(SagaTransaction saga) {
@@ -29,8 +34,10 @@ class FlowManagerSagaTransaction {
 
     /**
      * Creates a flow manager with a custom review interval.
-     * @param saga root saga transaction
-     * @param timeToReviewTransactions interval (ms) between transaction status checks
+     * 
+     * @param saga                     root saga transaction
+     * @param timeToReviewTransactions interval (ms) between transaction status
+     *                                 checks
      */
     public FlowManagerSagaTransaction(SagaTransaction saga, Long timeToReviewTransactions) {
         this(saga);
@@ -57,6 +64,7 @@ class FlowManagerSagaTransaction {
 
     /**
      * Runs the saga transaction chain and computes the final status.
+     * 
      * @throws Exception if an unexpected error occurs
      */
     public void runSagaTransactions() throws Exception {
@@ -70,8 +78,8 @@ class FlowManagerSagaTransaction {
                 runSagaTransaction(currentTransaction);
                 // post process for transaction
                 postRunTransactionProcess(currentTransaction);
-                //asign next transaction (The roolbacks are processed in
-                //postRunTransactionProcess)
+                // asign next transaction (The roolbacks are processed in
+                // postRunTransactionProcess)
                 if (currentTransaction.transaction.getTransactionStatus() == TransactionStatus.FAILED) {
                     break;
                 }
@@ -80,10 +88,10 @@ class FlowManagerSagaTransaction {
             setFlowManagerSagaTransactionStatus(getStatusOfSaga());
         } catch (Exception ex) {
             setFlowManagerSagaTransactionStatus(FlowManagerSagaTransactionStatus.INCONSISTENT);
-            System.out.println("Saga finished with inconsistencies");
+            log.info("Saga finished with inconsistencies");
         }
-        System.out.println("No more transactions to process.");
-        System.out.println("The final status of saga is: " + this.getFlowManagerSagaTransactionStatus());
+        log.info("No more transactions to process.");
+        log.info("The final status of saga is: " + this.getFlowManagerSagaTransactionStatus());
     }
 
     private void runPreProcessForRunTransaction(SagaTransaction sagaTransaction) {
@@ -94,7 +102,7 @@ class FlowManagerSagaTransaction {
                     .setPreProcessForRunTransactionStatus(PreProcessForRunTransactionStatus.SUCCESFUL);
         } catch (Exception ex) {
             sagaTransaction.transaction.setPreProcessForRunTransactionStatus(PreProcessForRunTransactionStatus.FAILED);
-            System.out.println("Preprocess for transaction: " + sagaTransaction.transaction.getDescription()
+            log.info("Preprocess for transaction: " + sagaTransaction.transaction.getDescription()
                     + " have been failed.");
         }
     }
@@ -126,16 +134,16 @@ class FlowManagerSagaTransaction {
             // Create a thread object
             threadCurrentTransaction = new Thread(threadTransactionWrapper,
                     "Transaction - Run: " + sagaTransaction.transaction.getDescription());
-            //Trasnaction time out 
+            // Trasnaction time out
             Long transactionTimeOut = sagaTransaction.transaction.getTransactionPolitics().transactionTimeOut();
             // Start the thread execution
             threadCurrentTransaction.start();
             while (true) {
-                System.out.println("Still processing transaction: " + sagaTransaction.transaction.getDescription());
-                System.out.println("Thread Status: " + threadTransactionWrapper.getTransactionThreadStatus());
-                //Sleep this thread
+                log.info("Still processing transaction: " + sagaTransaction.transaction.getDescription());
+                log.info("Thread Status: " + threadTransactionWrapper.getTransactionThreadStatus());
+                // Sleep this thread
                 Thread.sleep(timeToReviewTransactions);
-                //update elapsed time for transaction
+                // update elapsed time for transaction
                 this.transactionElapsedTime = this.transactionElapsedTime + timeToReviewTransactions;
                 // Hilo de ejecucion correcto? si, entonces salimos del while
                 if (threadTransactionWrapper
@@ -145,36 +153,36 @@ class FlowManagerSagaTransaction {
                 else if (threadTransactionWrapper
                         .getTransactionThreadStatus() == TransactionThreadStatus.THREAD_FINISHED_WITH_ERRORS) {
                     throw new Exception(threadTransactionWrapper.getTransactionThreadException());
-                } //Verifico el timeout de la transaction
-                else if(this.transactionElapsedTime >= transactionTimeOut){
-                    //Clean timeout variable
-                    this.transactionElapsedTime = 0L; 
-                    //interrupt transaction thread
+                } // Verifico el timeout de la transaction
+                else if (this.transactionElapsedTime >= transactionTimeOut) {
+                    // Clean timeout variable
+                    this.transactionElapsedTime = 0L;
+                    // interrupt transaction thread
                     threadCurrentTransaction.interrupt();
-                    //raise exception
+                    // raise exception
                     throw new Exception("Error, transaction timeout has been reach.");
                 }
             }
-            //Clean timeout variable
-            this.transactionElapsedTime = 0L; 
+            // Clean timeout variable
+            this.transactionElapsedTime = 0L;
             // Set status for transaction
             sagaTransaction.transaction.setTransactionStatus(TransactionStatus.SUCCESSFUL);
         } catch (Exception e) {
             sagaTransaction.transaction.setTransactionStatus(TransactionStatus.FAILED);
-            System.out.println(
+            log.info(
                     "Transaction: " + sagaTransaction.transaction.getClass() + " have been failed. Error: " + e);
         }
     }
 
     private void postRunTransactionProcess(SagaTransaction sagaTransactionDone) throws Exception {
         // Report transaction status
-        System.out.println("Final status of transaction: " + sagaTransactionDone.transaction.toString());
+        log.info("Final status of transaction: " + sagaTransactionDone.transaction.toString());
         switch (sagaTransactionDone.transaction.getTransactionStatus()) {
             case FAILED:
                 runRollBacksSagaTransaction(sagaTransactionDone);
                 break;
             case SUCCESSFUL:
-                System.out.println("Transaction done correctly: " + sagaTransactionDone.transaction.getDescription());
+                log.info("Transaction done correctly: " + sagaTransactionDone.transaction.getDescription());
                 break;
             default:
                 throw new Exception(
@@ -186,7 +194,7 @@ class FlowManagerSagaTransaction {
         // Si father null significa que es la transaccion inicial.
 
         if (sagaTransaction.fatherSagaTransaction == null) {
-            System.out.println(
+            log.info(
                     "No rollbacks to do for the failed transaction: " + sagaTransaction.transaction.getDescription());
             return;
         }
@@ -200,7 +208,7 @@ class FlowManagerSagaTransaction {
             } while (currentTransactionToRollback != null && !exceptionInRollback);
         } catch (Exception e) {
             setFlowManagerSagaTransactionStatus(FlowManagerSagaTransactionStatus.INCONSISTENT);
-            System.out.println("Saga generates inconsistencies at rollbacks triggeres by transaction: "
+            log.info("Saga generates inconsistencies at rollbacks triggeres by transaction: "
                     + sagaTransaction.transaction.getDescription());
         }
 
@@ -218,14 +226,14 @@ class FlowManagerSagaTransaction {
             exceptionInRollback = true;
             sagaTransaction.transaction.setTransactionStatus(TransactionStatus.FAILED);
             setFlowManagerSagaTransactionStatus(FlowManagerSagaTransactionStatus.INCONSISTENT);
-            System.out.println("Saga generates inconsistencies at rollback of transaction: "
+            log.info("Saga generates inconsistencies at rollback of transaction: "
                     + sagaTransaction.transaction.getDescription());
         }
         try {
             runCatchErrorSagaTransaction(sagaTransaction);
         } catch (Exception e) {
             setFlowManagerSagaTransactionStatus(FlowManagerSagaTransactionStatus.FINISHED_WITH_ERRORS_CONTROLLATED);
-            System.out.println("Saga generates controllated errors at catchErrors function of transaction: "
+            log.info("Saga generates controllated errors at catchErrors function of transaction: "
                     + sagaTransaction.transaction.getDescription());
         }
     }
@@ -239,16 +247,16 @@ class FlowManagerSagaTransaction {
         // Create a thread object
         threadCurrentTransaction = new Thread(threadTransactionWrapper,
                 "Rollback Transaction - Run: " + sagaTransaction.transaction.getDescription());
-        //Rollback timeout
+        // Rollback timeout
         Long transactionTimeOut = sagaTransaction.transaction.getTransactionPolitics().transactionTimeOut();
         // Start the thread execution
         threadCurrentTransaction.start();
         while (true) {
             System.out
                     .println("Still processing transaction Rollback: " + sagaTransaction.transaction.getDescription());
-            System.out.println("Thread Status: " + threadTransactionWrapper.getTransactionThreadStatus());
+            log.info("Thread Status: " + threadTransactionWrapper.getTransactionThreadStatus());
             Thread.sleep(timeToReviewTransactions);
-            //update elapsed time for transaction
+            // update elapsed time for transaction
             this.transactionElapsedTime = this.transactionElapsedTime + timeToReviewTransactions;
             // Hilo de ejecucion correcto? si, entonces salimos del while
             if (threadTransactionWrapper
@@ -259,18 +267,18 @@ class FlowManagerSagaTransaction {
                     .getTransactionThreadStatus() == TransactionThreadStatus.THREAD_FINISHED_WITH_ERRORS) {
                 exceptionInRollback = true;
                 throw new Exception(threadTransactionWrapper.getTransactionThreadException());
-            } //Verifico el timeout de la transaction
-            else if(this.transactionElapsedTime >= transactionTimeOut){
-                //Clean timeout variable
-                this.transactionElapsedTime = 0L; 
-                //interrupt transaction thread
+            } // Verifico el timeout de la transaction
+            else if (this.transactionElapsedTime >= transactionTimeOut) {
+                // Clean timeout variable
+                this.transactionElapsedTime = 0L;
+                // interrupt transaction thread
                 threadCurrentTransaction.interrupt();
-                //raise exception
+                // raise exception
                 throw new Exception("Error, rollback timeout has been reach.");
             }
         }
-        //Clean timeout variable
-        this.transactionElapsedTime = 0L;     
+        // Clean timeout variable
+        this.transactionElapsedTime = 0L;
     }
 
     private FlowManagerSagaTransactionStatus getStatusOfSaga() {

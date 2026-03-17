@@ -2,11 +2,14 @@ package net.ajaramillo.artifacts.saga;
 
 import java.util.UUID;
 
+import lombok.extern.slf4j.Slf4j;
+
 /**
  * Orchestrates a saga by registering transactions and executing them in order.
  * This class is the main entry point for running a saga and tracking its
  * overall context and state.
  */
+@Slf4j
 public final class SagaOrchestator {
     // Identificador UNICO del conjunto de transacciones
     private UUID sagaTransactionId;
@@ -37,7 +40,7 @@ public final class SagaOrchestator {
             canRunSagaInstance = true;
         } catch (Exception e) {
             canRunSagaInstance = false;
-            System.out.println("Error in initialization of saga data context.");
+            log.info("Error in initialization of saga data context.");
         }
     }
 
@@ -82,9 +85,9 @@ public final class SagaOrchestator {
      */
     public void runSaga() throws Exception {
         if (canRunSagaInstance) {
-            System.out.println("Running saga with id: " + this.sagaTransactionId);
+            log.info("Running saga with id: " + this.sagaTransactionId);
             initialSagaTransaction.runSagaTransactions(timeToReviewTransactions);
-            System.out.println("Saga with id: " + this.sagaTransactionId + " finished");
+            log.info("Saga with id: " + this.sagaTransactionId + " finished");
         } else {
             throw new Exception("Saga can not run, some initial configuration have been failed.");
         }
@@ -116,7 +119,7 @@ public final class SagaOrchestator {
         } else if (this.initialSagaTransaction.transaction != null // CUando es la primera transaccion borrar solo el
                                                                    // objeto transaction
                 && this.initialSagaTransaction.innerSagaTransaction == null) {
-            System.out.println("Trans deleted: " + this.initialSagaTransaction.transaction.getDescription());
+            log.info("Transaction deleted: " + this.initialSagaTransaction.transaction.getDescription());
             this.sagaContext.removeTransaction(this.initialSagaTransaction.transaction);
             this.initialSagaTransaction.transaction.setTransactionContext(null);
             this.initialSagaTransaction.transaction = null;

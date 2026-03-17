@@ -11,7 +11,6 @@ interface TransactionRunnable<E extends Exception> extends Runnable {
         try {
             runTask();
         } catch (Exception ex) {
-            System.out.println("Exception del runtask capturada.");
             setTransactionThreadException(ex);
             this.setTransactionThreadStatus(TransactionThreadStatus.THREAD_FINISHED_WITH_ERRORS);
         }

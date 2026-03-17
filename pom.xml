@@ -43,6 +43,24 @@
 
     <dependencies>
         <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>2.0.17</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-simple</artifactId>
+            <version>2.0.9</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.18.34</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-api</artifactId>
             <version>5.11.1</version>
@@ -90,7 +108,7 @@
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-javadoc-plugin</artifactId>
-                        <version>3.10.1</version> <!-- Check for latest version at Maven Central -->
+                        <version>3.10.1</version>                        <!-- Check for latest version at Maven Central -->
                         <executions>
                             <execution>
                                 <id>attach-javadocs</id>
@@ -103,7 +121,7 @@
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-source-plugin</artifactId>
-                        <version>3.3.1</version> <!-- Check for latest version at Maven Central -->
+                        <version>3.3.1</version>                        <!-- Check for latest version at Maven Central -->
                         <executions>
                             <execution>
                                 <id>attach-sources</id>
@@ -116,9 +134,9 @@
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-gpg-plugin</artifactId>
-                        <version>3.2.7</version> <!-- Check for latest version at Maven Central -->                      
+                        <version>3.2.7</version>                        <!-- Check for latest version at Maven Central -->
                         <configuration>
-                            <keyname>390F211977910F42</keyname> <!-- Key ID to sign the files -->
+                            <keyname>390F211977910F42</keyname>                            <!-- Key ID to sign the files -->
                         </configuration>
                         <executions>
                             <execution>
@@ -133,7 +151,7 @@
                     <plugin>
                         <groupId>org.sonatype.central</groupId>
                         <artifactId>central-publishing-maven-plugin</artifactId>
-                        <version>0.6.0</version>                       
+                        <version>0.6.0</version>
                         <extensions>true</extensions>
                         <configuration>
                             <publishingServerId>central</publishingServerId>
