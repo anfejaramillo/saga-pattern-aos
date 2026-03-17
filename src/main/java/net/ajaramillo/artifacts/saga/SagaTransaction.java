@@ -10,7 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 class SagaTransaction {
     SagaTransaction fatherSagaTransaction;
     SagaTransaction innerSagaTransaction;
-    Transaction transaction;
+    STransaction transaction;
 
     /**
      * Creates an empty saga transaction node.
@@ -41,7 +41,7 @@ class SagaTransaction {
      * Adds a transaction to the end of the chain.
      * @param transactionToAdd transaction to add
      */
-    public void addTransaction(Transaction transactionToAdd) {
+    public void addTransaction(STransaction transactionToAdd) {
         if (this.transaction != null) { // false: significa que este objeto no tiene trans y por eso la añadimos
             if (this.innerSagaTransaction == null) {
                 // Nueva instancia

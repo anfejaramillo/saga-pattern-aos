@@ -8,7 +8,7 @@ import java.util.UUID;
  * {@link #getDescription()} to define behavior.
  */
 @TransactionPolitics
-public abstract class Transaction {
+public abstract class STransaction {
     // id_transaction
     private UUID transactionId = UUID.randomUUID();
     // Estado de este objeto transaccion

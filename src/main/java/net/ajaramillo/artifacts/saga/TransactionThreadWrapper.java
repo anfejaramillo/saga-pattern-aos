@@ -5,8 +5,8 @@ package net.ajaramillo.artifacts.saga;
  * @param <E> transaction type
  */
 //@FunctionalInterface
-class TransactionThreadWrapper<E extends Transaction> implements TransactionRunnable<Exception> {
-    Transaction tr;
+class TransactionThreadWrapper<E extends STransaction> implements TransactionRunnable<Exception> {
+    STransaction tr;
     private TransactionThreadStatus tts = TransactionThreadStatus.THREAD_CREATED;
     private Exception ttException;
 
@@ -14,7 +14,7 @@ class TransactionThreadWrapper<E extends Transaction> implements TransactionRunn
      * Creates a wrapper for the given transaction.
      * @param tr transaction to execute
      */
-    TransactionThreadWrapper(Transaction tr) {
+    TransactionThreadWrapper(STransaction tr) {
         this.tr = tr;
     }
 

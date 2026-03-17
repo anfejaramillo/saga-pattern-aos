@@ -10,7 +10,7 @@ import lombok.extern.slf4j.Slf4j;
  * overall context and state.
  */
 @Slf4j
-public final class SagaOrchestator {
+public final class SagaOrchestrator {
     // Identificador UNICO del conjunto de transacciones
     private UUID sagaTransactionId;
     // Wrapper de la transaccion inicial
@@ -28,7 +28,7 @@ public final class SagaOrchestator {
      * Creates a new orchestrator with the provided saga context.
      * @param sagaContext shared context for all transactions in the saga
      */
-    public SagaOrchestator(SagaContext sagaContext) {
+    public SagaOrchestrator(SagaContext sagaContext) {
         this.initialSagaTransaction = new SagaTransaction();
         this.sagaTransactionId = UUID.randomUUID();
         try {
@@ -49,7 +49,7 @@ public final class SagaOrchestator {
      * @param sagaContext shared context for all transactions in the saga
      * @param timeToReviewTransactions interval (ms) between transaction status checks
      */
-    public SagaOrchestator(SagaContext sagaContext, Long timeToReviewTransactions){
+    public SagaOrchestrator(SagaContext sagaContext, Long timeToReviewTransactions){
         this(sagaContext);
         this.timeToReviewTransactions = timeToReviewTransactions;
     }
@@ -98,7 +98,7 @@ public final class SagaOrchestator {
      * @param trans transaction to add
      * @throws NullPointerException if the transaction is null
      */
-    public void addSagaTransaction(Transaction trans) throws NullPointerException {
+    public void addSagaTransaction(STransaction trans) throws NullPointerException {
         if (trans == null) {
             throw new NullPointerException("Transaction instance can not be null.");
         }

@@ -8,14 +8,14 @@ import java.util.*;
  * add custom fields to hold shared data.
  */
 public abstract class SagaContext {
-    private List<Transaction> transactions = new ArrayList<>();
-    private SagaOrchestator sagaOrchestrator;
+    private List<STransaction> transactions = new ArrayList<>();
+    private SagaOrchestrator sagaOrchestrator;
 
     /**
      * Sets the orchestrator that owns this context.
      * @param sagaOrchestrator orchestrator instance
      */
-    final void setSagaOrchestrator(SagaOrchestator sagaOrchestrator) {
+    final void setSagaOrchestrator(SagaOrchestrator sagaOrchestrator) {
         this.sagaOrchestrator = sagaOrchestrator;
     }
 
@@ -23,7 +23,7 @@ public abstract class SagaContext {
      * Returns the associated saga orchestrator.
      * @return orchestrator instance
      */
-    public final SagaOrchestator getSagaOrchestrator() {
+    public final SagaOrchestrator getSagaOrchestrator() {
         return this.sagaOrchestrator;
     }
 
@@ -31,7 +31,7 @@ public abstract class SagaContext {
      * Returns the list of transactions registered in the saga.
      * @return transactions list
      */
-    public final List<Transaction> getTransactions() {
+    public final List<STransaction> getTransactions() {
         return transactions;
     }
 
@@ -39,7 +39,7 @@ public abstract class SagaContext {
      * Adds a transaction to the internal list.
      * @param trans transaction to add
      */
-    final void addTransaction(Transaction trans) {
+    final void addTransaction(STransaction trans) {
         this.transactions.add(trans);
     }
 
@@ -47,7 +47,7 @@ public abstract class SagaContext {
      * Removes a transaction from the internal list.
      * @param trans transaction to remove
      */
-    final void removeTransaction(Transaction trans) {
+    final void removeTransaction(STransaction trans) {
         this.transactions.remove(trans);
     }
 

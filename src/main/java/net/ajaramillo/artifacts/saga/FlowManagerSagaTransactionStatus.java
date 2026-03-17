@@ -4,9 +4,9 @@ package net.ajaramillo.artifacts.saga;
  * Status values for the saga flow manager.
  */
 public enum FlowManagerSagaTransactionStatus {
-    READY, //Manager listo para lanzar las transacciones
-    RUNNING,  //Manager administrando las transacciones SINCRONAMENT
-    FINISHED_CORRECTLY, //Terminada la saga sin errores
-    FINISHED_WITH_ERRORS_CONTROLLATED, // terminada la saga, pero los errores fueron manejados por las mismas transacciones (pueden ser rollbacks o transacciones adicionales)
-    INCONSISTENT, //Terminada la saga con errores
+    READY, //Manager ready to run transactions
+    RUNNING,  //Manager in work with transactions synchronous
+    FINISHED_CORRECTLY, //Correctly finished saga
+    FINISHED_WITH_ERRORS_CONTROLLATED, // The saga is finished, the errors were handled by the same transactions (they may be rollbacks or additional transactions)
+    INCONSISTENT, //Saga in inconsistent state
 }
