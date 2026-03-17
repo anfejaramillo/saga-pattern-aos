@@ -139,8 +139,8 @@ class FlowManagerSagaTransaction {
             // Start the thread execution
             threadCurrentTransaction.start();
             while (true) {
-                log.info("Still processing transaction: " + sagaTransaction.transaction.getDescription());
-                log.info("Thread Status: " + threadTransactionWrapper.getTransactionThreadStatus());
+                log.info("Still processing transaction: " + sagaTransaction.transaction.getDescription() + "\n");
+                log.info("Thread Status: " + threadTransactionWrapper.getTransactionThreadStatus() + "\n");
                 // Sleep this thread
                 Thread.sleep(timeToReviewTransactions);
                 // update elapsed time for transaction
@@ -252,9 +252,8 @@ class FlowManagerSagaTransaction {
         // Start the thread execution
         threadCurrentTransaction.start();
         while (true) {
-            System.out
-                    .println("Still processing transaction Rollback: " + sagaTransaction.transaction.getDescription());
-            log.info("Thread Status: " + threadTransactionWrapper.getTransactionThreadStatus());
+            log.info("Still processing transaction Rollback: " + sagaTransaction.transaction.getDescription() + "\n");
+            log.info("Thread Status: " + threadTransactionWrapper.getTransactionThreadStatus() + "\n");
             Thread.sleep(timeToReviewTransactions);
             // update elapsed time for transaction
             this.transactionElapsedTime = this.transactionElapsedTime + timeToReviewTransactions;
